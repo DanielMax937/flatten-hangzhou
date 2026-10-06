@@ -99,3 +99,17 @@ MVP 仍然依赖公开路由器生成候选路线，还没有直接在城市完�
 ## 部署
 
 项目可直接部署到 Vercel。
+
+
+## 推荐线路图片
+
+推荐线路的代表图通过 `/api/route-image` 从 Wikimedia Commons 拉取，并由 Vercel CDN 缓存。前端不直接热链第三方图片。
+
+- Cyberpunk 夜景线：Hongyadong night lights Chongqing.jpg — Lianguanlun — CC BY 4.0
+  https://commons.wikimedia.org/wiki/File:Hongyadong_night_lights_Chongqing.jpg
+- 8D 魔幻城市线：A train of Chongqing Rail Transit Line 2 coming through a residential building at Liziba.jpg — Chen Hualin — CC BY-SA 4.0
+  https://commons.wikimedia.org/wiki/File:A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg
+- 老重庆坡城线：十八梯老街 - Old Street in Shibati Area - 2015.04 - panoramio.jpg — rheins — CC BY 3.0
+  https://commons.wikimedia.org/wiki/File:%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg
+
+应用界面中也会显示摄影者和许可证链接。
