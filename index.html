@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Flatten Hangzhou - 杭州避坡路线 MVP" />
+  <title>Flatten Hangzhou · 杭州避坡地图</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://tile.openstreetmap.org" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <div class="brand-row">
+        <div>
+          <div class="eyebrow">HANGZHOU · ROUTE LAB</div>
+          <h1>Flatten Hangzhou</h1>
+          <p class="subtitle">不只找最短的路，也找更省爬升的路。</p>
+        </div>
+        <div class="badge">MVP</div>
+      </div>
+      <div class="controls">
+        <label><span>起点</span><select id="start"></select></label>
+        <label><span>终点</span><select id="end"></select></label>
+        <div class="mode-switch" role="group" aria-label="出行方式">
+          <button class="mode active" data-mode="foot">步行</button>
+          <button class="mode" data-mode="bike">骑行</button>
+        </div>
+        <button id="routeBtn" class="primary">计算路线</button>
+      </div>
+      <div id="status" class="status">选择起终点，然后计算路线。</div>
+      <section id="result" class="result hidden">
+        <div class="metric-hero">
+          <div><div class="metric-label">当前方案</div><div id="routeName" class="route-name">最短</div></div>
+          <div id="sourceBadge" class="source-badge">LIVE</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><span>距离</span><strong id="distance">—</strong></div>
+          <div class="metric"><span>累计爬升</span><strong id="ascent">—</strong></div>
+          <div class="metric"><span>估算最陡坡</span><strong id="grade">—</strong></div>
+        </div>
+        <div class="slider-wrap">
+          <div class="slider-labels"><span>Shortest</span><span>Flatter</span></div>
+          <input id="tradeoff" type="range" min="0" max="100" value="0" />
+          <div id="comparison" class="comparison">拖动滑杆比较路线</div>
+        </div>
+        <div id="notice" class="notice"></div>
+      </section>
+      <div class="about"><strong>这个 MVP 在验证什么？</strong><p>从公开路网取得多条候选路线，再用高程采样计算累计爬升，并展示距离与体力成本之间的取舍。正式版会改为杭州离线路网 + DEM + 多目标 BOA*。</p></div>
+    </section>
+    <section class="map-wrap"><div id="map"></div><div class="map-caption">WGS84 · OpenStreetMap · elevation sampled server-side</div></section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/app.js"></script>
+</body>
+</html>
