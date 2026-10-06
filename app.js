@@ -28,21 +28,48 @@ const CITIES = {
         name: 'Cyberpunk 夜景线',
         duration: '3–5h',
         description: 'YouTube 高频核心：立体楼层、霓虹夜景、两江汇流。',
+        intro: '从魁星楼的立体错层出发，穿过解放碑，再走到洪崖洞与朝天门来福士。最好在傍晚启程：前半段看山城空间，后半段正好进入重庆最有辨识度的霓虹夜景。',
         stops: ['kuixing', 'jiefangbei', 'hongyadong', 'raffles'],
+        imageId: 'hongyadong-night',
+        imageAlt: '重庆洪崖洞夜景',
+        photo: {
+          author: 'Lianguanlun',
+          license: 'CC BY 4.0',
+          source: 'https://commons.wikimedia.org/wiki/File:Hongyadong_night_lights_Chongqing.jpg',
+          licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+        },
       },
       {
         id: 'vertical-city',
         name: '8D 魔幻城市线',
         duration: '半日',
         description: '外国 vlog 最常见的城市奇观组合：穿楼轻轨 + 山城层级。',
+        intro: '先看李子坝轻轨从居民楼中穿过，再到鹅岭感受城市高差，最后回到魁星楼和洪崖洞。它最适合第一次理解重庆为什么被叫作“8D 城市”：轨道、道路、楼层和山体在不同高度交叠。',
         stops: ['liziba', 'eling', 'kuixing', 'hongyadong'],
+        imageId: 'liziba-train',
+        imageAlt: '李子坝轻轨穿楼',
+        photo: {
+          author: 'Chen Hualin',
+          license: 'CC BY-SA 4.0',
+          source: 'https://commons.wikimedia.org/wiki/File:A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg',
+          licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+        },
       },
       {
         id: 'old-chongqing',
         name: '老重庆坡城线',
         duration: '3–4h',
         description: 'Instagram / X 新宠：台阶老街、索道、南岸山城街巷。',
+        intro: '从十八梯的石阶与老街出发，经长江索道跨江，到龙门浩和下浩里慢慢走。这里的重点不是追地标，而是体验重庆真正的“坡城”肌理：台阶、坡道、旧街、江岸和不断变化的视线高度。',
         stops: ['shibati', 'cableway', 'longmenhao', 'xiahaoli'],
+        imageId: 'shibati-old-street',
+        imageAlt: '重庆十八梯老街',
+        photo: {
+          author: 'rheins',
+          license: 'CC BY 3.0',
+          source: 'https://commons.wikimedia.org/wiki/File:%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg',
+          licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+        },
       },
     ],
   },
@@ -79,6 +106,11 @@ const noticeEl = document.querySelector('#notice');
 const eyebrowEl = document.querySelector('#eyebrow');
 const socialRoutesEl = document.querySelector('#socialRoutes');
 const routeCardsEl = document.querySelector('#routeCards');
+const routeFeatureEl = document.querySelector('#routeFeature');
+const routePhotoEl = document.querySelector('#routePhoto');
+const routePhotoCreditEl = document.querySelector('#routePhotoCredit');
+const routeFeatureTitleEl = document.querySelector('#routeFeatureTitle');
+const routeFeatureIntroEl = document.querySelector('#routeFeatureIntro');
 const routeStopsEl = document.querySelector('#routeStops');
 
 let cityKey = 'chongqing';
@@ -92,7 +124,10 @@ for (const [key, city] of Object.entries(CITIES)) {
 }
 cityEl.value = cityKey;
 
-const map = L.map('map', { zoomControl: false }).setView(CITIES[cityKey].center, CITIES[cityKey].zoom);
+const map = L.map('map', { zoomControl: false }).setView(
+  CITIES[cityKey].center,
+  CITIES[cityKey].zoom
+);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -130,7 +165,7 @@ function populatePlaces() {
 function renderRecommendations() {
   const recommendations = currentCity().recommendations || [];
   routeCardsEl.innerHTML = '';
-  routeStopsEl.classList.add('hidden');
+  routeFeatureEl.classList.add('hidden');
   activeRecommendationId = null;
 
   if (!recommendations.length) {
@@ -156,6 +191,29 @@ function renderRecommendations() {
     button.addEventListener('click', () => loadRecommendation(route.id));
     routeCardsEl.appendChild(button);
   }
+}
+
+function showRecommendationStory(recommendation, stopPlaces) {
+  routeFeatureTitleEl.textContent = recommendation.name;
+  routeFeatureIntroEl.textContent = recommendation.intro;
+  routePhotoEl.src = `/api/route-image?id=${encodeURIComponent(recommendation.imageId)}`;
+  routePhotoEl.alt = recommendation.imageAlt;
+
+  routePhotoEl.onerror = () => {
+    routePhotoEl.removeAttribute('src');
+    routePhotoEl.alt = '图片暂时加载失败';
+  };
+
+  const photo = recommendation.photo;
+  routePhotoCreditEl.innerHTML =
+    `Photo: <a href="${photo.source}" target="_blank" rel="noreferrer">${photo.author}</a> · ` +
+    `<a href="${photo.licenseUrl}" target="_blank" rel="noreferrer">${photo.license}</a> · Wikimedia Commons`;
+
+  routeStopsEl.innerHTML =
+    '<strong>途经</strong><br>' +
+    stopPlaces.map((p, i) => `${i + 1}. ${p.name}`).join(' → ');
+
+  routeFeatureEl.classList.remove('hidden');
 }
 
 function fmtKm(m) {
@@ -184,6 +242,7 @@ function clearMap() {
 
 function palette(index, selected) {
   if (selected) return { color: '#176946', weight: 7, opacity: .95 };
+
   return {
     color: index === 0 ? '#65756a' : '#8ea096',
     weight: 4,
@@ -246,10 +305,16 @@ function render(index) {
         : '平衡路线');
 
   document.querySelector('#distance').textContent = fmtKm(r.distance);
-  document.querySelector('#ascent').textContent = r.elevationAvailable ? fmtM(r.ascent) : '待高程';
-  document.querySelector('#grade').textContent = r.elevationAvailable ? fmtGrade(r.maxGrade) : '待高程';
+  document.querySelector('#ascent').textContent =
+    r.elevationAvailable ? fmtM(r.ascent) : '待高程';
+  document.querySelector('#grade').textContent =
+    r.elevationAvailable ? fmtGrade(r.maxGrade) : '待高程';
   document.querySelector('#sourceBadge').textContent =
-    activeRecommendationId ? 'SOCIAL ROUTE' : r.elevationAvailable ? 'LIVE DEM' : 'ROUTE ONLY';
+    activeRecommendationId
+      ? 'SOCIAL ROUTE'
+      : r.elevationAvailable
+        ? 'LIVE DEM'
+        : 'ROUTE ONLY';
 
   const extra = r.distance - shortest.distance;
   const saved = (shortest.ascent || 0) - (r.ascent || 0);
@@ -293,6 +358,7 @@ function combineSegments(segmentCandidates, variant) {
         return [...elevationCandidates].sort((a, b) => a.ascent - b.ascent)[0];
       }
     }
+
     return candidates[0];
   });
 
@@ -340,10 +406,7 @@ async function loadRecommendation(routeId) {
   });
 
   const stopPlaces = recommendation.stops.map(getPlace).filter(Boolean);
-  routeStopsEl.innerHTML =
-    `<strong>${recommendation.name}</strong><br>` +
-    stopPlaces.map((p, i) => `${i + 1}. ${p.name}`).join(' → ');
-  routeStopsEl.classList.remove('hidden');
+  showRecommendationStory(recommendation, stopPlaces);
 
   startEl.value = recommendation.stops[0];
   endEl.value = recommendation.stops[recommendation.stops.length - 1];
@@ -356,6 +419,7 @@ async function loadRecommendation(routeId) {
 
   try {
     const segmentPairs = [];
+
     for (let i = 0; i < stopPlaces.length - 1; i++) {
       segmentPairs.push([stopPlaces[i], stopPlaces[i + 1]]);
     }
@@ -368,6 +432,7 @@ async function loadRecommendation(routeId) {
     const flatter = combineSegments(segmentCandidates, 'flat');
 
     routes = [shortest];
+
     const meaningfullyDifferent =
       Math.abs(flatter.distance - shortest.distance) > 20 ||
       (flatter.elevationAvailable &&
@@ -396,8 +461,10 @@ async function loadRecommendation(routeId) {
 
 async function calculate() {
   activeRecommendationId = null;
-  document.querySelectorAll('.route-card').forEach(card => card.classList.remove('active'));
-  routeStopsEl.classList.add('hidden');
+  document.querySelectorAll('.route-card').forEach(card => {
+    card.classList.remove('active');
+  });
+  routeFeatureEl.classList.add('hidden');
 
   if (startEl.value === endEl.value) {
     setStatus('起点和终点不能相同。', true);
