@@ -103,7 +103,7 @@ MVP 仍然依赖公开路由器生成候选路线，还没有直接在城市完�
 
 ## 推荐线路图片
 
-推荐线路的代表图通过 `/api/route-image` 从 Wikimedia Commons 拉取，并由 Vercel CDN 缓存。前端不直接热链第三方图片。
+推荐线路的代表图会由 GitHub Actions 下载到 `assets/routes/` 并随仓库、Vercel 部署一起发布。前端优先读取本地静态图片；`/api/route-image` 仅作为兜底，并由 Vercel CDN 缓存。
 
 - Cyberpunk 夜景线：Hongyadong night lights Chongqing.jpg — Lianguanlun — CC BY 4.0
   https://commons.wikimedia.org/wiki/File:Hongyadong_night_lights_Chongqing.jpg
@@ -113,3 +113,14 @@ MVP 仍然依赖公开路由器生成候选路线，还没有直接在城市完�
   https://commons.wikimedia.org/wiki/File:%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg
 
 应用界面中也会显示摄影者和许可证链接。
+
+
+### 图片缓存工作流
+
+`.github/workflows/cache-route-images.yml` 会从上述授权来源下载三张代表图并提交到：
+
+- `assets/routes/cyberpunk-night.jpg`
+- `assets/routes/vertical-city.jpg`
+- `assets/routes/old-chongqing.jpg`
+
+这样生产页面不依赖浏览器直接访问 Wikimedia。
