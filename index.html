@@ -17,42 +17,75 @@
         <div>
           <div id="eyebrow" class="eyebrow">CHONGQING · ROUTE LAB</div>
           <h1>Flatten City</h1>
-          <p class="subtitle">不只找最短的路，也找更省爬升的路。</p>
+          <p class="subtitle">不只找最短的路，也找更省爬升、更值得走的路。</p>
         </div>
         <div class="badge">MVP</div>
       </div>
+
       <div class="controls">
         <label><span>城市</span><select id="city"></select></label>
+
+        <section id="socialRoutes" class="social-routes">
+          <div class="section-head">
+            <div>
+              <span class="section-kicker">SOCIAL PICKS</span>
+              <strong>外国游客热门路线</strong>
+            </div>
+            <span class="platforms">YouTube · X · Instagram</span>
+          </div>
+          <div id="routeCards" class="route-cards"></div>
+          <div id="routeStops" class="route-stops hidden"></div>
+        </section>
+
+        <div class="manual-label">或者自己选起终点</div>
         <label><span>起点</span><select id="start"></select></label>
         <label><span>终点</span><select id="end"></select></label>
+
         <div class="mode-switch" role="group" aria-label="出行方式">
           <button class="mode active" data-mode="foot">步行</button>
           <button class="mode" data-mode="bike">骑行</button>
         </div>
         <button id="routeBtn" class="primary">计算路线</button>
       </div>
-      <div id="status" class="status">选择起终点，然后计算路线。</div>
+
+      <div id="status" class="status">选择推荐线路，或者自己选择起终点。</div>
+
       <section id="result" class="result hidden">
         <div class="metric-hero">
-          <div><div class="metric-label">当前方案</div><div id="routeName" class="route-name">最短</div></div>
+          <div>
+            <div class="metric-label">当前方案</div>
+            <div id="routeName" class="route-name">最短</div>
+          </div>
           <div id="sourceBadge" class="source-badge">LIVE</div>
         </div>
+
         <div class="metrics">
           <div class="metric"><span>距离</span><strong id="distance">—</strong></div>
           <div class="metric"><span>累计爬升</span><strong id="ascent">—</strong></div>
           <div class="metric"><span>估算最陡坡</span><strong id="grade">—</strong></div>
         </div>
+
         <div class="slider-wrap">
           <div class="slider-labels"><span>Shortest</span><span>Flatter</span></div>
           <input id="tradeoff" type="range" min="0" max="100" value="0" />
           <div id="comparison" class="comparison">拖动滑杆比较路线</div>
         </div>
+
         <div id="notice" class="notice"></div>
       </section>
-      <div class="about"><strong>为什么默认重庆？</strong><p>重庆高差大、坡道密集，“最短距离”和“最低体力成本”的差别更容易被感知。杭州作为第二个实验城市保留，用于比较不同城市地形下的效果。</p></div>
+
+      <div class="about">
+        <strong>推荐线路怎么来的？</strong>
+        <p>优先取外国旅行创作者在 YouTube、X 和 Instagram 反复出现的点位，再按地理位置重新组合。推荐线路仍会实时计算距离、爬升和坡度。</p>
+      </div>
     </section>
-    <section class="map-wrap"><div id="map"></div><div class="map-caption">WGS84 · OpenStreetMap · elevation sampled server-side</div></section>
+
+    <section class="map-wrap">
+      <div id="map"></div>
+      <div class="map-caption">WGS84 · OpenStreetMap · elevation sampled server-side</div>
+    </section>
   </main>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="/app.js"></script>
 </body>
