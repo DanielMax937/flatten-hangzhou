@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Flatten Hangzhou - 杭州避坡路线 MVP" />
-  <title>Flatten Hangzhou · 杭州避坡地图</title>
+  <meta name="description" content="Flatten City - 重庆与杭州避坡路线 MVP" />
+  <title>Flatten City · 更省力的城市路线</title>
   <link rel="preconnect" href="https://unpkg.com" />
   <link rel="preconnect" href="https://tile.openstreetmap.org" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -15,13 +15,14 @@
     <section class="panel">
       <div class="brand-row">
         <div>
-          <div class="eyebrow">HANGZHOU · ROUTE LAB</div>
-          <h1>Flatten Hangzhou</h1>
+          <div id="eyebrow" class="eyebrow">CHONGQING · ROUTE LAB</div>
+          <h1>Flatten City</h1>
           <p class="subtitle">不只找最短的路，也找更省爬升的路。</p>
         </div>
         <div class="badge">MVP</div>
       </div>
       <div class="controls">
+        <label><span>城市</span><select id="city"></select></label>
         <label><span>起点</span><select id="start"></select></label>
         <label><span>终点</span><select id="end"></select></label>
         <div class="mode-switch" role="group" aria-label="出行方式">
@@ -48,7 +49,7 @@
         </div>
         <div id="notice" class="notice"></div>
       </section>
-      <div class="about"><strong>这个 MVP 在验证什么？</strong><p>从公开路网取得多条候选路线，再用高程采样计算累计爬升，并展示距离与体力成本之间的取舍。正式版会改为杭州离线路网 + DEM + 多目标 BOA*。</p></div>
+      <div class="about"><strong>为什么默认重庆？</strong><p>重庆高差大、坡道密集，“最短距离”和“最低体力成本”的差别更容易被感知。杭州作为第二个实验城市保留，用于比较不同城市地形下的效果。</p></div>
     </section>
     <section class="map-wrap"><div id="map"></div><div class="map-caption">WGS84 · OpenStreetMap · elevation sampled server-side</div></section>
   </main>
