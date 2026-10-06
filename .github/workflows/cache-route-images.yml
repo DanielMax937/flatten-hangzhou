@@ -1,0 +1,53 @@
+name: Cache route images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cache-route-images.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cache-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download licensed route images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/routes
+
+          curl -L --fail --retry 3 \
+            "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Hongyadong_night_lights_Chongqing.jpg/960px-Hongyadong_night_lights_Chongqing.jpg" \
+            -o assets/routes/cyberpunk-night.jpg
+
+          curl -L --fail --retry 3 \
+            "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg/1280px-A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg" \
+            -o assets/routes/vertical-city.jpg
+
+          curl -L --fail --retry 3 \
+            "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg/1280px-%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg" \
+            -o assets/routes/old-chongqing.jpg
+
+          file assets/routes/*.jpg
+          ls -lh assets/routes
+
+      - name: Commit cached images
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/routes
+          if git diff --cached --quiet; then
+            echo "Route images are already cached."
+            exit 0
+          fi
+          git commit -m "Cache route images"
+          git push
