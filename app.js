@@ -30,6 +30,7 @@ const CITIES = {
         description: 'YouTube 高频核心：立体楼层、霓虹夜景、两江汇流。',
         intro: '从魁星楼的立体错层出发，穿过解放碑，再走到洪崖洞与朝天门来福士。最好在傍晚启程：前半段看山城空间，后半段正好进入重庆最有辨识度的霓虹夜景。',
         stops: ['kuixing', 'jiefangbei', 'hongyadong', 'raffles'],
+        imagePath: '/assets/routes/cyberpunk-night.jpg',
         imageId: 'hongyadong-night',
         imageAlt: '重庆洪崖洞夜景',
         photo: {
@@ -46,6 +47,7 @@ const CITIES = {
         description: '外国 vlog 最常见的城市奇观组合：穿楼轻轨 + 山城层级。',
         intro: '先看李子坝轻轨从居民楼中穿过，再到鹅岭感受城市高差，最后回到魁星楼和洪崖洞。它最适合第一次理解重庆为什么被叫作“8D 城市”：轨道、道路、楼层和山体在不同高度交叠。',
         stops: ['liziba', 'eling', 'kuixing', 'hongyadong'],
+        imagePath: '/assets/routes/vertical-city.jpg',
         imageId: 'liziba-train',
         imageAlt: '李子坝轻轨穿楼',
         photo: {
@@ -62,6 +64,7 @@ const CITIES = {
         description: 'Instagram / X 新宠：台阶老街、索道、南岸山城街巷。',
         intro: '从十八梯的石阶与老街出发，经长江索道跨江，到龙门浩和下浩里慢慢走。这里的重点不是追地标，而是体验重庆真正的“坡城”肌理：台阶、坡道、旧街、江岸和不断变化的视线高度。',
         stops: ['shibati', 'cableway', 'longmenhao', 'xiahaoli'],
+        imagePath: '/assets/routes/old-chongqing.jpg',
         imageId: 'shibati-old-street',
         imageAlt: '重庆十八梯老街',
         photo: {
@@ -196,10 +199,17 @@ function renderRecommendations() {
 function showRecommendationStory(recommendation, stopPlaces) {
   routeFeatureTitleEl.textContent = recommendation.name;
   routeFeatureIntroEl.textContent = recommendation.intro;
-  routePhotoEl.src = `/api/route-image?id=${encodeURIComponent(recommendation.imageId)}`;
+  routePhotoEl.dataset.fallbackUsed = '0';
+  routePhotoEl.src = recommendation.imagePath;
   routePhotoEl.alt = recommendation.imageAlt;
 
   routePhotoEl.onerror = () => {
+    if (routePhotoEl.dataset.fallbackUsed !== '1') {
+      routePhotoEl.dataset.fallbackUsed = '1';
+      routePhotoEl.src = `/api/route-image?id=${encodeURIComponent(recommendation.imageId)}`;
+      return;
+    }
+
     routePhotoEl.removeAttribute('src');
     routePhotoEl.alt = '图片暂时加载失败';
   };
