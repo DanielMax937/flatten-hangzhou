@@ -3,11 +3,29 @@ const ROUTERS = {
   bike: 'https://routing.openstreetmap.de/routed-bike/route/v1/driving',
 };
 
-function parseCoord(value) {
+const CITY_BOUNDS = {
+  chongqing: { minLat: 29.35, maxLat: 29.75, minLng: 106.25, maxLng: 106.75 },
+  hangzhou: { minLat: 29.8, maxLat: 30.6, minLng: 119.7, maxLng: 120.7 },
+};
+
+function parseCoord(value, city) {
   if (!value || typeof value !== 'string') return null;
+
   const [lng, lat] = value.split(',').map(Number);
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-  if (lat < 29.8 || lat > 30.6 || lng < 119.7 || lng > 120.7) return null;
+
+  const bounds = CITY_BOUNDS[city];
+  if (!bounds) return null;
+
+  if (
+    lat < bounds.minLat ||
+    lat > bounds.maxLat ||
+    lng < bounds.minLng ||
+    lng > bounds.maxLng
+  ) {
+    return null;
+  }
+
   return { lng, lat };
 }
 
@@ -18,21 +36,30 @@ function haversine(a, b) {
   const dLng = toRad(b.lng - a.lng);
   const lat1 = toRad(a.lat);
   const lat2 = toRad(b.lat);
-  const h = Math.sin(dLat / 2) ** 2 +
+
+  const h =
+    Math.sin(dLat / 2) ** 2 +
     Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
 function sampleGeometry(coords, maxPoints = 60) {
   if (coords.length <= maxPoints) return coords;
+
   const step = (coords.length - 1) / (maxPoints - 1);
   const out = [];
-  for (let i = 0; i < maxPoints; i++) out.push(coords[Math.round(i * step)]);
+
+  for (let i = 0; i < maxPoints; i++) {
+    out.push(coords[Math.round(i * step)]);
+  }
+
   return out;
 }
 
 function smooth(values) {
   if (values.length < 3) return values;
+
   return values.map((v, i) => {
     const a = values[Math.max(0, i - 1)];
     const c = values[Math.min(values.length - 1, i + 1)];
@@ -43,6 +70,7 @@ function smooth(values) {
 async function fetchJson(url, options = {}, timeoutMs = 8000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+
   try {
     const r = await fetch(url, { ...options, signal: controller.signal });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -54,12 +82,20 @@ async function fetchJson(url, options = {}, timeoutMs = 8000) {
 
 async function elevationForGeometry(geometry) {
   const sampled = sampleGeometry(geometry, 55);
-  const locations = sampled.map(([lng, lat]) => ({ latitude: lat, longitude: lng }));
-  const data = await fetchJson('https://api.open-elevation.com/api/v1/lookup', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ locations }),
-  }, 8500);
+  const locations = sampled.map(([lng, lat]) => ({
+    latitude: lat,
+    longitude: lng,
+  }));
+
+  const data = await fetchJson(
+    'https://api.open-elevation.com/api/v1/lookup',
+    {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ locations }),
+    },
+    8500
+  );
 
   if (!Array.isArray(data.results) || data.results.length !== sampled.length) {
     throw new Error('Elevation response incomplete');
@@ -77,7 +113,9 @@ async function elevationForGeometry(geometry) {
     const b = { lng: sampled[i][0], lat: sampled[i][1] };
     const dx = haversine(a, b);
 
-    if (dx > 8) maxGrade = Math.max(maxGrade, Math.abs(dz) / dx * 100);
+    if (dx > 8) {
+      maxGrade = Math.max(maxGrade, (Math.abs(dz) / dx) * 100);
+    }
   }
 
   return {
@@ -109,7 +147,9 @@ function paretoSort(routes) {
       .filter(r => r.elevationAvailable)
       .sort((a, b) => a.ascent - b.ascent)[0];
 
-    if (flattest && !front.includes(flattest)) front.push(flattest);
+    if (flattest && !front.includes(flattest)) {
+      front.push(flattest);
+    }
   }
 
   return front.slice(0, 4);
@@ -118,12 +158,15 @@ function paretoSort(routes) {
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
 
-  const start = parseCoord(req.query.start);
-  const end = parseCoord(req.query.end);
+  const city = req.query.city === 'hangzhou' ? 'hangzhou' : 'chongqing';
+  const start = parseCoord(req.query.start, city);
+  const end = parseCoord(req.query.end, city);
   const mode = req.query.mode === 'bike' ? 'bike' : 'foot';
 
   if (!start || !end) {
-    return res.status(400).json({ error: 'Invalid Hangzhou coordinates.' });
+    return res.status(400).json({
+      error: '坐标不在当前支持城市范围内。',
+    });
   }
 
   try {
@@ -134,7 +177,7 @@ module.exports = async function handler(req, res) {
 
     const routing = await fetchJson(
       url,
-      { headers: { 'user-agent': 'flatten-hangzhou-mvp/1.0' } },
+      { headers: { 'user-agent': 'flatten-city-mvp/1.1' } },
       9000
     );
 
@@ -149,6 +192,7 @@ module.exports = async function handler(req, res) {
 
         try {
           const e = await elevationForGeometry(geometry);
+
           return {
             id: `route-${index}`,
             distance: r.distance,
@@ -178,6 +222,7 @@ module.exports = async function handler(req, res) {
     const front = paretoSort(routes);
 
     return res.status(200).json({
+      city,
       mode,
       routes: front.length ? front : routes,
       sources: ['OpenStreetMap routing', 'Open-Elevation'],
