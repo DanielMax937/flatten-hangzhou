@@ -30,15 +30,48 @@ const CITIES = {
         description: 'YouTube 高频核心：立体楼层、霓虹夜景、两江汇流。',
         intro: '从魁星楼的立体错层出发，穿过解放碑，再走到洪崖洞与朝天门来福士。最好在傍晚启程：前半段看山城空间，后半段正好进入重庆最有辨识度的霓虹夜景。',
         stops: ['kuixing', 'jiefangbei', 'hongyadong', 'raffles'],
-        imagePath: '/assets/routes/cyberpunk-night.jpg',
-        imageId: 'hongyadong-night',
-        imageAlt: '重庆洪崖洞夜景',
-        photo: {
-          author: 'Lianguanlun',
-          license: 'CC BY 4.0',
-          source: 'https://commons.wikimedia.org/wiki/File:Hongyadong_night_lights_Chongqing.jpg',
-          licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
-        },
+        gallery: [
+          {
+            title: '魁星楼',
+            note: '最能看懂重庆立体层级的起点：广场、天桥和楼层在不同高度突然接在一起。',
+            path: '/assets/routes/kuixing.jpg',
+            alt: '重庆魁星楼',
+            author: 'E2568',
+            license: 'CC0 1.0',
+            source: 'https://commons.wikimedia.org/wiki/File:Kuixing_Tower_1.jpg',
+            licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
+          },
+          {
+            title: '解放碑',
+            note: '重庆最经典的城市中心地标，从老城历史直接切换到繁华商业街区。',
+            path: '/assets/routes/jiefangbei.jpg',
+            alt: '重庆解放碑',
+            author: 'Baycrest',
+            license: 'CC BY-SA 2.5',
+            source: 'https://commons.wikimedia.org/wiki/File:Jiefangbei.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.5/',
+          },
+          {
+            title: '洪崖洞',
+            note: '依山而建的吊脚楼群，入夜后是海外社媒最有辨识度的重庆画面之一。',
+            path: '/assets/routes/hongyadong.jpg',
+            alt: '重庆洪崖洞夜景',
+            author: 'Lianguanlun',
+            license: 'CC BY 4.0',
+            source: 'https://commons.wikimedia.org/wiki/File:Hongyadong_night_lights_Chongqing.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+          },
+          {
+            title: '来福士 · 朝天门',
+            note: '在两江交汇处收尾，用现代天际线把老山城与新重庆放进同一个视野。',
+            path: '/assets/routes/raffles.jpg',
+            alt: '重庆来福士',
+            author: 'Suicasmo',
+            license: 'CC0 1.0',
+            source: 'https://commons.wikimedia.org/wiki/File:Raffles_City_Chongqing_20260507-1.jpg',
+            licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
+          },
+        ],
       },
       {
         id: 'vertical-city',
@@ -47,15 +80,48 @@ const CITIES = {
         description: '外国 vlog 最常见的城市奇观组合：穿楼轻轨 + 山城层级。',
         intro: '先看李子坝轻轨从居民楼中穿过，再到鹅岭感受城市高差，最后回到魁星楼和洪崖洞。它最适合第一次理解重庆为什么被叫作“8D 城市”：轨道、道路、楼层和山体在不同高度交叠。',
         stops: ['liziba', 'eling', 'kuixing', 'hongyadong'],
-        imagePath: '/assets/routes/vertical-city.jpg',
-        imageId: 'liziba-train',
-        imageAlt: '李子坝轻轨穿楼',
-        photo: {
-          author: 'Chen Hualin',
-          license: 'CC BY-SA 4.0',
-          source: 'https://commons.wikimedia.org/wiki/File:A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg',
-          licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
-        },
+        gallery: [
+          {
+            title: '李子坝',
+            note: '轻轨穿楼是重庆“8D 城市”最直接的一秒钟解释。',
+            path: '/assets/routes/liziba.jpg',
+            alt: '李子坝轻轨穿楼',
+            author: 'Chen Hualin',
+            license: 'CC BY-SA 4.0',
+            source: 'https://commons.wikimedia.org/wiki/File:A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+          },
+          {
+            title: '鹅岭公园',
+            note: '爬到更高处后，渝中半岛的山脊和两侧江面会把重庆的地形结构摊开给你看。',
+            path: '/assets/routes/eling.jpg',
+            alt: '重庆鹅岭公园',
+            author: 'Chen Huang',
+            license: 'CC BY 3.0',
+            source: 'https://commons.wikimedia.org/wiki/File:%E9%B9%85%E5%B2%AD%E5%85%AC%E5%9B%AD_-_Eling_Park_-_2016.03_-_panoramio.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+          },
+          {
+            title: '魁星楼',
+            note: '从“地面”走上天桥后突然发现自己已经在高楼中层，是山城空间错觉的代表。',
+            path: '/assets/routes/kuixing.jpg',
+            alt: '重庆魁星楼',
+            author: 'E2568',
+            license: 'CC0 1.0',
+            source: 'https://commons.wikimedia.org/wiki/File:Kuixing_Tower_1.jpg',
+            licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
+          },
+          {
+            title: '洪崖洞',
+            note: '用夜景收尾：多层道路、吊脚楼和江岸灯光叠在一起。',
+            path: '/assets/routes/hongyadong.jpg',
+            alt: '重庆洪崖洞夜景',
+            author: 'Lianguanlun',
+            license: 'CC BY 4.0',
+            source: 'https://commons.wikimedia.org/wiki/File:Hongyadong_night_lights_Chongqing.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+          },
+        ],
       },
       {
         id: 'old-chongqing',
@@ -64,15 +130,48 @@ const CITIES = {
         description: 'Instagram / X 新宠：台阶老街、索道、南岸山城街巷。',
         intro: '从十八梯的石阶与老街出发，经长江索道跨江，到龙门浩和下浩里慢慢走。这里的重点不是追地标，而是体验重庆真正的“坡城”肌理：台阶、坡道、旧街、江岸和不断变化的视线高度。',
         stops: ['shibati', 'cableway', 'longmenhao', 'xiahaoli'],
-        imagePath: '/assets/routes/old-chongqing.jpg',
-        imageId: 'shibati-old-street',
-        imageAlt: '重庆十八梯老街',
-        photo: {
-          author: 'rheins',
-          license: 'CC BY 3.0',
-          source: 'https://commons.wikimedia.org/wiki/File:%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg',
-          licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
-        },
+        gallery: [
+          {
+            title: '十八梯',
+            note: '石阶把上下半城连接起来，最适合从脚下直接感受“坡城”而不是只看天际线。',
+            path: '/assets/routes/shibati.jpg',
+            alt: '重庆十八梯老街',
+            author: 'rheins',
+            license: 'CC BY 3.0',
+            source: 'https://commons.wikimedia.org/wiki/File:%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+          },
+          {
+            title: '长江索道',
+            note: '从空中跨过长江，把“走山城”短暂切换成“看山城”。',
+            path: '/assets/routes/cableway.jpg',
+            alt: '重庆长江索道',
+            author: '慕尼黑啤酒',
+            license: 'CC BY 3.0',
+            source: 'https://commons.wikimedia.org/wiki/File:Chongqing_Changjiang_Cableway.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+          },
+          {
+            title: '龙门浩 · 南滨路江岸',
+            note: '老街背靠山体、面向渝中半岛；这张授权照片拍摄点就在龙门浩街道的南滨路江岸。',
+            path: '/assets/routes/longmenhao.jpg',
+            alt: '重庆龙门浩附近南滨路江岸',
+            author: 'Fxqf',
+            license: 'CC BY-SA 4.0',
+            source: 'https://commons.wikimedia.org/wiki/File:%E9%87%8D%E5%BA%86%E5%B8%82%E5%8D%97%E5%B2%B8%E5%8C%BA%E5%8D%97%E6%BB%A8%E8%B7%AF%E5%BB%BA%E7%AD%91%E3%80%81%E8%B6%B8%E8%88%B9%E5%92%8C%E9%95%BF%E6%B1%9F.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+          },
+          {
+            title: '下浩里周边 · 南滨路',
+            note: '下浩里属于同一片南岸山城街区；目前用可确认授权的南滨路实景代表周边环境。',
+            path: '/assets/routes/xiahaoli-area.jpg',
+            alt: '重庆下浩里周边南滨路',
+            author: '重庆轨交18',
+            license: 'CC BY-SA 4.0',
+            source: 'https://commons.wikimedia.org/wiki/File:%E5%8D%97%E6%BB%A8%E8%B7%AF.jpg',
+            licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+          },
+        ],
       },
     ],
   },
@@ -110,8 +209,7 @@ const eyebrowEl = document.querySelector('#eyebrow');
 const socialRoutesEl = document.querySelector('#socialRoutes');
 const routeCardsEl = document.querySelector('#routeCards');
 const routeFeatureEl = document.querySelector('#routeFeature');
-const routePhotoEl = document.querySelector('#routePhoto');
-const routePhotoCreditEl = document.querySelector('#routePhotoCredit');
+const routeGalleryEl = document.querySelector('#routeGallery');
 const routeFeatureTitleEl = document.querySelector('#routeFeatureTitle');
 const routeFeatureIntroEl = document.querySelector('#routeFeatureIntro');
 const routeStopsEl = document.querySelector('#routeStops');
@@ -199,25 +297,32 @@ function renderRecommendations() {
 function showRecommendationStory(recommendation, stopPlaces) {
   routeFeatureTitleEl.textContent = recommendation.name;
   routeFeatureIntroEl.textContent = recommendation.intro;
-  routePhotoEl.dataset.fallbackUsed = '0';
-  routePhotoEl.src = recommendation.imagePath;
-  routePhotoEl.alt = recommendation.imageAlt;
 
-  routePhotoEl.onerror = () => {
-    if (routePhotoEl.dataset.fallbackUsed !== '1') {
-      routePhotoEl.dataset.fallbackUsed = '1';
-      routePhotoEl.src = `/api/route-image?id=${encodeURIComponent(recommendation.imageId)}`;
-      return;
-    }
-
-    routePhotoEl.removeAttribute('src');
-    routePhotoEl.alt = '图片暂时加载失败';
-  };
-
-  const photo = recommendation.photo;
-  routePhotoCreditEl.innerHTML =
-    `Photo: <a href="${photo.source}" target="_blank" rel="noreferrer">${photo.author}</a> · ` +
-    `<a href="${photo.licenseUrl}" target="_blank" rel="noreferrer">${photo.license}</a> · Wikimedia Commons`;
+  routeGalleryEl.innerHTML = recommendation.gallery
+    .map((photo, index) => `
+      <article class="route-gallery-card">
+        <div class="route-gallery-image-wrap">
+          <img
+            class="route-gallery-image"
+            src="${photo.path}"
+            alt="${photo.alt}"
+            loading="${index === 0 ? 'eager' : 'lazy'}"
+          />
+          <span class="route-gallery-step">${index + 1}</span>
+        </div>
+        <div class="route-gallery-body">
+          <span class="route-gallery-title">${photo.title}</span>
+          <span class="route-gallery-note">${photo.note}</span>
+          <span class="route-gallery-credit">
+            Photo:
+            <a href="${photo.source}" target="_blank" rel="noreferrer">${photo.author}</a>
+            ·
+            <a href="${photo.licenseUrl}" target="_blank" rel="noreferrer">${photo.license}</a>
+          </span>
+        </div>
+      </article>
+    `)
+    .join('');
 
   routeStopsEl.innerHTML =
     '<strong>途经</strong><br>' +
