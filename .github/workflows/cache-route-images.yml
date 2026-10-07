@@ -17,32 +17,25 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Download licensed route images
+      - name: Download licensed attraction images
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p assets/routes
+          UA="FlattenCity/1.0 (https://github.com/DanielMax937/flatten-hangzhou)"
 
-          download() {
-            outfile="$1"
-            filename="$2"
-            encoded="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))' "$filename")"
-            curl -L --fail --retry 3 \
-              -A "FlattenCity/1.0 (https://github.com/DanielMax937/flatten-hangzhou)" \
-              "https://commons.wikimedia.org/wiki/Special:Redirect/file/\${encoded}?width=1280" \
-              -o "assets/routes/\${outfile}"
-          }
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Kuixing_Tower_1.jpg/960px-Kuixing_Tower_1.jpg" -o assets/routes/kuixing.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Jiefangbei.jpg/1280px-Jiefangbei.jpg" -o assets/routes/jiefangbei.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Hongyadong_night_lights_Chongqing.jpg/960px-Hongyadong_night_lights_Chongqing.jpg" -o assets/routes/hongyadong.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Raffles_City_Chongqing_20260507-1.jpg/1280px-Raffles_City_Chongqing_20260507-1.jpg" -o assets/routes/raffles.jpg
 
-          download "kuixing.jpg" "Kuixing Tower 1.jpg"
-          download "jiefangbei.jpg" "Jiefangbei.jpg"
-          download "hongyadong.jpg" "Hongyadong night lights Chongqing.jpg"
-          download "raffles.jpg" "Raffles City Chongqing 20260507-1.jpg"
-          download "liziba.jpg" "A train of Chongqing Rail Transit Line 2 coming through a residential building at Liziba.jpg"
-          download "eling.jpg" "鹅岭公园 - Eling Park - 2016.03 - panoramio.jpg"
-          download "shibati.jpg" "十八梯老街 - Old Street in Shibati Area - 2015.04 - panoramio.jpg"
-          download "cableway.jpg" "Chongqing Changjiang Cableway.jpg"
-          download "longmenhao.jpg" "重庆市南岸区南滨路建筑、趸船和长江.jpg"
-          download "xiahaoli-area.jpg" "南滨路.jpg"
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg/1280px-A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg" -o assets/routes/liziba.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/%E9%B9%85%E5%B2%AD%E5%85%AC%E5%9B%AD_-_Eling_Park_-_2016.03_-_panoramio.jpg/1280px-%E9%B9%85%E5%B2%AD%E5%85%AC%E5%9B%AD_-_Eling_Park_-_2016.03_-_panoramio.jpg" -o assets/routes/eling.jpg
+
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg/1280px-%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg" -o assets/routes/shibati.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Chongqing_Changjiang_Cableway.jpg/1280px-Chongqing_Changjiang_Cableway.jpg" -o assets/routes/cableway.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/%E9%87%8D%E5%BA%86%E5%B8%82%E5%8D%97%E5%B2%B8%E5%8C%BA%E5%8D%97%E6%BB%A8%E8%B7%AF%E5%BB%BA%E7%AD%91%E3%80%81%E8%B6%B8%E8%88%B9%E5%92%8C%E9%95%BF%E6%B1%9F.jpg/1280px-%E9%87%8D%E5%BA%86%E5%B8%82%E5%8D%97%E5%B2%B8%E5%8C%BA%E5%8D%97%E6%BB%A8%E8%B7%AF%E5%BB%BA%E7%AD%91%E3%80%81%E8%B6%B8%E8%88%B9%E5%92%8C%E9%95%BF%E6%B1%9F.jpg" -o assets/routes/longmenhao.jpg
+          curl -L --fail --retry 3 -A "$UA" "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/%E5%8D%97%E6%BB%A8%E8%B7%AF.jpg/960px-%E5%8D%97%E6%BB%A8%E8%B7%AF.jpg" -o assets/routes/xiahaoli-area.jpg
 
           file assets/routes/*.jpg
           ls -lh assets/routes
@@ -60,5 +53,3 @@ jobs:
           fi
           git commit -m "Cache attraction gallery images"
           git push
-
-# retrigger: attraction-gallery-v2
