@@ -23,17 +23,26 @@ jobs:
           set -euo pipefail
           mkdir -p assets/routes
 
-          curl -L --fail --retry 3 \
-            "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Hongyadong_night_lights_Chongqing.jpg/960px-Hongyadong_night_lights_Chongqing.jpg" \
-            -o assets/routes/cyberpunk-night.jpg
+          download() {
+            outfile="$1"
+            filename="$2"
+            encoded="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))' "$filename")"
+            curl -L --fail --retry 3 \
+              -A "FlattenCity/1.0 (https://github.com/DanielMax937/flatten-hangzhou)" \
+              "https://commons.wikimedia.org/wiki/Special:Redirect/file/\${encoded}?width=1280" \
+              -o "assets/routes/\${outfile}"
+          }
 
-          curl -L --fail --retry 3 \
-            "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg/1280px-A_train_of_Chongqing_Rail_Transit_Line_2_coming_through_a_residential_building_at_Liziba.jpg" \
-            -o assets/routes/vertical-city.jpg
-
-          curl -L --fail --retry 3 \
-            "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg/1280px-%E5%8D%81%E5%85%AB%E6%A2%AF%E8%80%81%E8%A1%97_-_Old_Street_in_Shibati_Area_-_2015.04_-_panoramio.jpg" \
-            -o assets/routes/old-chongqing.jpg
+          download "kuixing.jpg" "Kuixing Tower 1.jpg"
+          download "jiefangbei.jpg" "Jiefangbei.jpg"
+          download "hongyadong.jpg" "Hongyadong night lights Chongqing.jpg"
+          download "raffles.jpg" "Raffles City Chongqing 20260507-1.jpg"
+          download "liziba.jpg" "A train of Chongqing Rail Transit Line 2 coming through a residential building at Liziba.jpg"
+          download "eling.jpg" "鹅岭公园 - Eling Park - 2016.03 - panoramio.jpg"
+          download "shibati.jpg" "十八梯老街 - Old Street in Shibati Area - 2015.04 - panoramio.jpg"
+          download "cableway.jpg" "Chongqing Changjiang Cableway.jpg"
+          download "longmenhao.jpg" "重庆市南岸区南滨路建筑、趸船和长江.jpg"
+          download "xiahaoli-area.jpg" "南滨路.jpg"
 
           file assets/routes/*.jpg
           ls -lh assets/routes
@@ -49,5 +58,5 @@ jobs:
             echo "Route images are already cached."
             exit 0
           fi
-          git commit -m "Cache route images"
+          git commit -m "Cache attraction gallery images"
           git push
